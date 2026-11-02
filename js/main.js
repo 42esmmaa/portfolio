@@ -2,7 +2,7 @@ const projects = [
   {
     title: "Portfolio-Seite",
     description:
-      "Diese Seite: responsiver One-Pager mit Dark Mode, Projektfilter und Formularvalidierung – ohne Framework.",
+      "Responsiver One-Pager mit Dark Mode, filterbaren Projektkarten, Formularvalidierung und Scroll-Animationen – umgesetzt ohne Framework.",
     tech: ["HTML", "CSS", "JavaScript"],
     tags: ["frontend"],
     link: "https://github.com/42esmmaa/portfolio",
@@ -10,7 +10,7 @@ const projects = [
   {
     title: "Bau-Website mit Next.js",
     description:
-      "Website für ein fiktives Bauunternehmen mit Projektübersicht, Detailseiten und Kontaktformular.",
+      "Website für ein fiktives Bauunternehmen mit Projektübersicht, Detailseiten und Kontaktformular auf Basis von Next.js und TypeScript.",
     tech: ["Next.js", "TypeScript", "CSS Modules"],
     tags: ["frontend"],
     link: "https://github.com/42esmmaa/bau-website",
@@ -18,7 +18,7 @@ const projects = [
   {
     title: "Microservice „Blumenladen“",
     description:
-      "REST-Service mit Spring Boot und PostgreSQL, Qualitätssicherung mit SonarQube, Deployment auf Kubernetes.",
+      "Backend-Service mit Spring Boot und PostgreSQL; Qualitätssicherung mit SonarQube und Deployment auf Kubernetes.",
     tech: ["Java", "Spring Boot", "PostgreSQL", "Kubernetes"],
     tags: ["backend", "devops"],
     link: "https://github.com/42esmmaa/blumenladen",
@@ -26,7 +26,7 @@ const projects = [
   {
     title: "Fitnessstudio (Teamprojekt)",
     description:
-      "Backend mit Python/FastAPI auf PostgreSQL; Zusammenarbeit im Team über Git und GitHub Projects.",
+      "Backend mit Python und FastAPI auf PostgreSQL. Die Teamarbeit wurde mit Git und GitHub Projects organisiert.",
     tech: ["Python", "FastAPI", "PostgreSQL"],
     tags: ["backend"],
     link: "https://github.com/42esmmaa/fitnessstudio",
@@ -114,6 +114,7 @@ filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
     filterButtons.forEach((b) => b.classList.remove("is-active"));
     button.classList.add("is-active");
+    filterButtons.forEach((b) => b.setAttribute("aria-pressed", String(b === button)));
     renderProjects(button.dataset.filter, true);
   });
 });
@@ -126,6 +127,10 @@ const root = document.documentElement;
 function applyTheme(theme) {
   root.dataset.theme = theme;
   themeToggle.textContent = theme === "dark" ? "☀️" : "🌙";
+  themeToggle.setAttribute(
+    "aria-label",
+    theme === "dark" ? "Helles Farbschema aktivieren" : "Dunkles Farbschema aktivieren"
+  );
 }
 
 let savedTheme = null;
@@ -153,14 +158,40 @@ const navMenu = document.querySelector(".nav__menu");
 navToggle.addEventListener("click", () => {
   const isOpen = navMenu.classList.toggle("is-open");
   navToggle.setAttribute("aria-expanded", isOpen);
+  navToggle.setAttribute("aria-label", isOpen ? "Menü schließen" : "Menü öffnen");
 });
 
 navMenu.querySelectorAll("a").forEach((link) => {
   link.addEventListener("click", () => {
     navMenu.classList.remove("is-open");
     navToggle.setAttribute("aria-expanded", "false");
+    navToggle.setAttribute("aria-label", "Menü öffnen");
   });
 });
+
+navMenu.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && navMenu.classList.contains("is-open")) {
+    navMenu.classList.remove("is-open");
+    navToggle.setAttribute("aria-expanded", "false");
+    navToggle.setAttribute("aria-label", "Menü öffnen");
+    navToggle.focus();
+  }
+});
+
+const navLinks = [...navMenu.querySelectorAll('a[href^="#"]')];
+const sectionObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const currentLink = navLinks.find((link) => link.hash === `#${entry.target.id}`);
+      navLinks.forEach((link) => link.removeAttribute("aria-current"));
+      currentLink?.setAttribute("aria-current", "location");
+    });
+  },
+  { rootMargin: "-25% 0px -65% 0px" }
+);
+
+document.querySelectorAll("main section[id]").forEach((section) => sectionObserver.observe(section));
 
 const form = document.querySelector("#contact-form");
 const successMessage = document.querySelector("#form-success");
@@ -169,6 +200,7 @@ function setError(input, message) {
   const field = input.closest(".form__field");
   field.querySelector(".form__error").textContent = message;
   field.classList.toggle("has-error", message !== "");
+  input.setAttribute("aria-invalid", String(message !== ""));
 }
 
 function isValidEmail(value) {
@@ -205,11 +237,13 @@ form.addEventListener("submit", (event) => {
   }
 
   if (valid) {
-    // TODO: echten Versand anbinden – aktuell gibt es kein Backend
-    successMessage.textContent = `Danke, ${name.value.trim()}! Deine Nachricht wurde geprüft.`;
-    form.reset();
+    const subject = `Nachricht von ${name.value.trim()} über dein Portfolio`;
+    const body = `Name: ${name.value.trim()}\nE-Mail: ${email.value.trim()}\n\n${message.value.trim()}`;
+    window.location.href = `mailto:akesma42@icloud.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    successMessage.textContent = "Dein E-Mail-Programm sollte sich jetzt öffnen. Prüfe die Nachricht und sende sie dort ab.";
   } else {
     successMessage.textContent = "";
+    form.querySelector('[aria-invalid="true"]')?.focus();
   }
 });
 

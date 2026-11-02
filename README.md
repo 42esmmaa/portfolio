@@ -7,8 +7,9 @@ Meine persönliche Portfolio-Seite, gebaut **ohne Framework** mit reinem HTML, C
 - **Responsive Design** mit CSS Grid, Flexbox und Media Queries (Desktop, Tablet, Handy)
 - **Dark Mode**: folgt der Systemeinstellung und merkt sich die eigene Wahl (`localStorage`)
 - **Projektfilter**: Projektkarten werden per JavaScript aus einer Datenliste erzeugt und nach Kategorie gefiltert
-- **Formularvalidierung** im Browser mit eigenen Fehlermeldungen
-- **Barrierearm**: semantisches HTML, `aria`-Attribute, Bedienung per Tastatur
+- **Kontaktformular**: Browser-Validierung; beim Absenden wird eine Nachricht im E-Mail-Programm vorbereitet (kein Backend-Versand)
+- **Barrierearm**: semantisches HTML, Sprunglink, aktive Navigation, `aria`-Attribute und Tastaturbedienung
+- **Favicon und Teilen-Vorschau** für einen vollständigen Auftritt im Browser und auf Social Media
 - **BEM-Namenskonvention** und CSS-Variablen für ein einheitliches Design
 
 ## Aufbau

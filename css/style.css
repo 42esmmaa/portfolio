@@ -68,6 +68,30 @@ a:hover {
   text-decoration: underline;
 }
 
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 20;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  transform: translateY(-150%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
 h1, h2, h3 {
   font-weight: 600;
   letter-spacing: -0.015em;
@@ -116,10 +140,28 @@ h1, h2, h3 {
 }
 
 .nav__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
   font-weight: 600;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   color: var(--color-text);
-  letter-spacing: 1px;
+  letter-spacing: -0.04em;
+}
+
+.nav__logo-mark {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  transition: transform 0.25s ease;
+}
+
+.nav__logo:hover .nav__logo-mark {
+  transform: rotate(12deg);
+}
+
+.nav__logo-dot {
+  color: var(--color-primary);
 }
 
 .nav__logo:hover {
@@ -145,6 +187,11 @@ h1, h2, h3 {
 .nav__menu a:hover {
   opacity: 1;
   text-decoration: none;
+}
+
+.nav__menu a[aria-current="location"] {
+  color: var(--color-primary);
+  opacity: 1;
 }
 
 .nav__toggle {
@@ -463,6 +510,11 @@ h1, h2, h3 {
   margin: -1.5rem 0 2rem;
 }
 
+.contact__note {
+  color: var(--color-muted);
+  margin: -1rem 0 1.5rem;
+}
+
 .form {
   display: grid;
   gap: 1.25rem;
@@ -614,5 +666,21 @@ h1, h2, h3 {
 
   .form {
     padding: 1.75rem 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .nav__logo-mark,
+  .card {
+    transition: none;
+  }
+
+  .nav__logo:hover .nav__logo-mark,
+  .card:hover {
+    transform: none;
   }
 }

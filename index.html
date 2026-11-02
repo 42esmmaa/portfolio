@@ -5,16 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Portfolio von Esma Sara Ak – Studentin der Wirtschaftsinformatik an der Hochschule Karlsruhe.">
   <title>Esma Sara Ak – Portfolio</title>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Esma Sara Ak – Portfolio">
+  <meta property="og:description" content="Projekte und Skills von Esma Sara Ak, Studentin der Wirtschaftsinformatik.">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css">
   <script src="js/main.js" defer></script>
 </head>
 <body>
 
+  <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+
   <header class="header">
     <nav class="nav container" aria-label="Hauptnavigation">
-      <a href="#start" class="nav__logo">ESA</a>
+      <a href="#start" class="nav__logo" aria-label="Esma – Startseite">
+        <svg class="nav__logo-mark" viewBox="0 0 36 36" aria-hidden="true">
+          <defs>
+            <linearGradient id="logo-gradient" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#0071e3"></stop>
+              <stop offset="100%" stop-color="#7d4cdb"></stop>
+            </linearGradient>
+          </defs>
+          <rect width="36" height="36" rx="12" fill="url(#logo-gradient)"></rect>
+          <path d="M18 7.5 20.7 15.3 28.5 18 20.7 20.7 18 28.5 15.3 20.7 7.5 18 15.3 15.3 18 7.5Z" fill="#fff"></path>
+        </svg>
+        <span>esma<span class="nav__logo-dot">.</span></span>
+      </a>
 
-      <button class="nav__toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="nav-menu">
+      <button class="nav__toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="nav-menu">
         <span></span><span></span><span></span>
       </button>
 
@@ -24,13 +43,13 @@
         <li><a href="#skills">Skills</a></li>
         <li><a href="#kontakt">Kontakt</a></li>
         <li>
-          <button class="theme-toggle" aria-label="Farbschema wechseln">🌙</button>
+          <button class="theme-toggle" type="button" aria-label="Farbschema wechseln">🌙</button>
         </li>
       </ul>
     </nav>
   </header>
 
-  <main>
+  <main id="main-content">
     <section id="start" class="hero container">
       <div class="hero__glow" aria-hidden="true"></div>
       <p class="hero__greeting">Hallo, ich bin</p>
@@ -62,9 +81,9 @@
           </p>
         </div>
         <ul class="about__facts">
-          <li><strong>3</strong><span>Studienprojekte</span></li>
-          <li><strong>3</strong><span>Sprachen</span></li>
-          <li><strong>C1</strong><span>Englisch</span></li>
+          <li><strong>2</strong><span>Backend-Projekte</span></li>
+          <li><strong>2</strong><span>Frontend-Projekte</span></li>
+          <li><strong>5</strong><span>Programmiersprachen</span></li>
         </ul>
       </div>
     </section>
@@ -73,13 +92,13 @@
       <h2 class="section__title">Projekte</h2>
 
       <div class="filter" role="group" aria-label="Projekte filtern">
-        <button class="filter__btn is-active" data-filter="alle">Alle</button>
-        <button class="filter__btn" data-filter="frontend">Frontend</button>
-        <button class="filter__btn" data-filter="backend">Backend</button>
-        <button class="filter__btn" data-filter="devops">DevOps</button>
+        <button class="filter__btn is-active" type="button" data-filter="alle" aria-pressed="true">Alle</button>
+        <button class="filter__btn" type="button" data-filter="frontend" aria-pressed="false">Frontend</button>
+        <button class="filter__btn" type="button" data-filter="backend" aria-pressed="false">Backend</button>
+        <button class="filter__btn" type="button" data-filter="devops" aria-pressed="false">DevOps</button>
       </div>
 
-      <div class="projects" id="project-list"></div>
+      <div class="projects" id="project-list" aria-live="polite"></div>
     </section>
 
     <section id="skills" class="section container">
@@ -109,22 +128,23 @@
     <section id="kontakt" class="section section--alt container">
       <h2 class="section__title">Kontakt</h2>
       <p class="contact__intro">Du hast Fragen oder eine Praktikumsstelle? Schreib mir gern.</p>
+      <p class="contact__note">Beim Absenden öffnet sich dein E-Mail-Programm mit einer vorbereiteten Nachricht.</p>
 
       <form class="form" id="contact-form" novalidate>
         <div class="form__field">
           <label for="name">Name</label>
-          <input type="text" id="name" name="name" autocomplete="name">
-          <p class="form__error" aria-live="polite"></p>
+          <input type="text" id="name" name="name" autocomplete="name" required aria-describedby="name-error">
+          <p class="form__error" id="name-error" aria-live="polite"></p>
         </div>
         <div class="form__field">
           <label for="email">E-Mail</label>
-          <input type="email" id="email" name="email" autocomplete="email">
-          <p class="form__error" aria-live="polite"></p>
+          <input type="email" id="email" name="email" autocomplete="email" required aria-describedby="email-error">
+          <p class="form__error" id="email-error" aria-live="polite"></p>
         </div>
         <div class="form__field">
           <label for="message">Nachricht</label>
-          <textarea id="message" name="message" rows="5"></textarea>
-          <p class="form__error" aria-live="polite"></p>
+          <textarea id="message" name="message" rows="5" required aria-describedby="message-error"></textarea>
+          <p class="form__error" id="message-error" aria-live="polite"></p>
         </div>
         <button type="submit" class="btn btn--primary">Nachricht senden</button>
         <p class="form__success" id="form-success" aria-live="polite"></p>

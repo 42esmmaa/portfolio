@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio von Esma Sara Ak – Studentin der Wirtschaftsinformatik in Karlsruhe">
+  <title>Esma Sara Ak – Portfolio</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/main.js" defer></script>
+</head>
+<body>
+
+  <header class="header">
+    <nav class="nav container" aria-label="Hauptnavigation">
+      <a href="#start" class="nav__logo">ESA</a>
+
+      <button class="nav__toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="nav-menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <ul class="nav__menu" id="nav-menu">
+        <li><a href="#ueber-mich">Über mich</a></li>
+        <li><a href="#projekte">Projekte</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+        <li>
+          <button class="theme-toggle" aria-label="Farbschema wechseln">🌙</button>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section id="start" class="hero container">
+      <p class="hero__greeting">Hallo, ich bin</p>
+      <h1 class="hero__title">Esma Sara Ak</h1>
+      <p class="hero__subtitle">
+        Studentin der Wirtschaftsinformatik an der Hochschule Karlsruhe.
+        Ich entwickle Web-Backends und bringe mir gerade die Frontend-Seite bei.
+      </p>
+      <div class="hero__actions">
+        <a href="#projekte" class="btn btn--primary">Projekte ansehen</a>
+        <a href="#kontakt" class="btn btn--outline">Kontakt</a>
+      </div>
+    </section>
+
+    <section id="ueber-mich" class="section container">
+      <h2 class="section__title">Über mich</h2>
+      <div class="about">
+        <div class="about__text">
+          <p>
+            Ich studiere seit 2024 Wirtschaftsinformatik in Karlsruhe. Im Studium habe ich REST-Services
+            mit Java/Spring Boot und Python/FastAPI gebaut und sie mit Docker und Kubernetes ausgerollt.
+          </p>
+          <p>
+            Neben dem Studium arbeite ich als studentische Hilfskraft am Scientific Computing Center des KIT
+            und gebe seit mehreren Jahren Mathe-Nachhilfe. Außerhalb des Studiums bringe ich mir HTML, CSS und
+            JavaScript bei – diese Seite ist eines der Ergebnisse.
+          </p>
+        </div>
+        <ul class="about__facts">
+          <li><strong>3</strong><span>Studienprojekte</span></li>
+          <li><strong>3</strong><span>Sprachen</span></li>
+          <li><strong>2026</strong><span>KIT, SCC</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="projekte" class="section container">
+      <h2 class="section__title">Projekte</h2>
+
+      <div class="filter" role="group" aria-label="Projekte filtern">
+        <button class="filter__btn is-active" data-filter="alle">Alle</button>
+        <button class="filter__btn" data-filter="frontend">Frontend</button>
+        <button class="filter__btn" data-filter="backend">Backend</button>
+        <button class="filter__btn" data-filter="devops">DevOps</button>
+      </div>
+
+      <div class="projects" id="project-list"></div>
+    </section>
+
+    <section id="skills" class="section container">
+      <h2 class="section__title">Skills</h2>
+      <div class="skills">
+        <div class="skills__group">
+          <h3>Frontend</h3>
+          <ul class="tags">
+            <li>HTML</li><li>CSS</li><li>JavaScript</li><li>TypeScript</li><li>Next.js</li><li>Figma</li>
+          </ul>
+        </div>
+        <div class="skills__group">
+          <h3>Backend</h3>
+          <ul class="tags">
+            <li>Python / FastAPI</li><li>Java / Spring Boot</li><li>SQL</li><li>PostgreSQL</li><li>C#</li>
+          </ul>
+        </div>
+        <div class="skills__group">
+          <h3>DevOps &amp; Tools</h3>
+          <ul class="tags">
+            <li>Git / GitHub</li><li>Docker</li><li>Kubernetes</li><li>Helm</li><li>Terraform</li><li>SonarQube</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="kontakt" class="section container">
+      <h2 class="section__title">Kontakt</h2>
+      <p class="contact__intro">Du hast Fragen oder eine Praktikumsstelle? Schreib mir gern.</p>
+
+      <form class="form" id="contact-form" novalidate>
+        <div class="form__field">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" autocomplete="name">
+          <p class="form__error" aria-live="polite"></p>
+        </div>
+        <div class="form__field">
+          <label for="email">E-Mail</label>
+          <input type="email" id="email" name="email" autocomplete="email">
+          <p class="form__error" aria-live="polite"></p>
+        </div>
+        <div class="form__field">
+          <label for="message">Nachricht</label>
+          <textarea id="message" name="message" rows="5"></textarea>
+          <p class="form__error" aria-live="polite"></p>
+        </div>
+        <button type="submit" class="btn btn--primary">Nachricht senden</button>
+        <p class="form__success" id="form-success" aria-live="polite"></p>
+      </form>
+
+      <ul class="contact__links">
+        <li><a href="https://github.com/42esmmaa" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://linkedin.com/in/esma-sara-ak" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="mailto:akesma42@icloud.com">E-Mail</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© <span id="year"></span> Esma Sara Ak · Mit HTML, CSS und JavaScript gebaut</p>
+  </footer>
+
+</body>
+</html>

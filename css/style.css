@@ -55,6 +55,7 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip; /* verhindert horizontales Scrollen durch den Hero-Hintergrund */
   transition: background 0.3s, color 0.3s;
 }
 
@@ -167,22 +168,54 @@ h1, h2, h3 {
 
 /* Hero */
 .hero {
-  padding-block: 8rem 7rem;
+  position: relative;
+  isolation: isolate;
+  padding-block: 6rem 5rem;
   text-align: center;
 }
 
+/* Interaktiver Hintergrund: Lichtschein und Punktraster folgen der Maus.
+   Die Position kommt als --x/--y aus main.js. */
+.hero__glow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  margin-left: -50vw; /* volle Fensterbreite, obwohl der Hero im Container sitzt */
+  z-index: -1;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(#000 55%, transparent);
+  mask-image: linear-gradient(#000 55%, transparent);
+  --x: 50%;
+  --y: 40%;
+  background:
+    radial-gradient(520px circle at var(--x) var(--y), color-mix(in srgb, #0071e3 16%, transparent), transparent 65%),
+    radial-gradient(380px circle at calc(var(--x) + 140px) calc(var(--y) + 60px), color-mix(in srgb, #e0457b 12%, transparent), transparent 65%);
+}
+
+.hero__glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(color-mix(in srgb, var(--color-text) 35%, transparent) 1px, transparent 1px);
+  background-size: 22px 22px;
+  -webkit-mask-image: radial-gradient(260px circle at var(--x) var(--y), #000, transparent 70%);
+  mask-image: radial-gradient(260px circle at var(--x) var(--y), #000, transparent 70%);
+}
+
 .hero__greeting {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: var(--color-muted);
   margin: 0;
 }
 
 .hero__title {
-  font-size: clamp(3.2rem, 10vw, 6rem);
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  margin: 0.3rem 0 1.25rem;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  margin: 0.25rem 0 1rem;
   background: var(--hero-gradient);
   -webkit-background-clip: text;
   background-clip: text;
@@ -190,10 +223,10 @@ h1, h2, h3 {
 }
 
 .hero__subtitle {
-  max-width: 38rem;
+  max-width: 34rem;
   margin: 0 auto;
-  font-size: clamp(1.2rem, 2.5vw, 1.55rem);
-  line-height: 1.33;
+  font-size: 1.2rem;
+  line-height: 1.4;
   color: var(--color-muted);
 }
 
@@ -202,7 +235,29 @@ h1, h2, h3 {
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
-  margin-top: 2.5rem;
+  margin-top: 2rem;
+}
+
+/* Einblenden beim Scrollen: Die Klasse .reveal setzt main.js,
+   ohne JavaScript bleibt also alles sichtbar. */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i, 0) * 80ms);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /* Buttons */
@@ -550,7 +605,7 @@ h1, h2, h3 {
   }
 
   .hero {
-    padding-block: 5rem 4rem;
+    padding-block: 4.5rem 3.5rem;
   }
 
   .section {

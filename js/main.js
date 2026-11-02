@@ -33,16 +33,40 @@ const projects = [
   },
 ];
 
+// Einblenden beim Scrollen
+const revealObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        revealObserver.unobserve(entry.target); // nur einmal einblenden
+      }
+    });
+  },
+  { threshold: 0.15 }
+);
+
+document
+  .querySelectorAll(".section__title, .about__text, .about__facts li, .filter, .skills__group, .contact__intro, .form, .contact__links")
+  .forEach((el) => {
+    el.classList.add("reveal");
+    // Elemente in derselben Gruppe leicht versetzt einblenden
+    if (el.matches(".about__facts li, .skills__group")) {
+      el.style.setProperty("--i", [...el.parentElement.children].indexOf(el));
+    }
+    revealObserver.observe(el);
+  });
+
 const projectList = document.querySelector("#project-list");
 
 // Elemente per createElement/textContent statt innerHTML, damit Projektdaten nie als HTML interpretiert werden
-function renderProjects(filter) {
+function renderProjects(filter, animate = false) {
   projectList.innerHTML = "";
 
   const visible =
     filter === "alle" ? projects : projects.filter((p) => p.tags.includes(filter));
 
-  visible.forEach((project) => {
+  visible.forEach((project, index) => {
     const card = document.createElement("article");
     card.className = "card";
 
@@ -70,6 +94,16 @@ function renderProjects(filter) {
     link.textContent = "Code auf GitHub →";
 
     card.append(title, text, tags, link);
+
+    // Beim Filtern sofort zeigen, beim ersten Laden erst beim Scrollen einblenden
+    card.classList.add("reveal");
+    card.style.setProperty("--i", index);
+    if (animate) {
+      requestAnimationFrame(() => card.classList.add("is-visible"));
+    } else {
+      revealObserver.observe(card);
+    }
+
     projectList.appendChild(card);
   });
 }
@@ -80,7 +114,7 @@ filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
     filterButtons.forEach((b) => b.classList.remove("is-active"));
     button.classList.add("is-active");
-    renderProjects(button.dataset.filter);
+    renderProjects(button.dataset.filter, true);
   });
 });
 
@@ -178,5 +212,48 @@ form.addEventListener("submit", (event) => {
     successMessage.textContent = "";
   }
 });
+
+// Interaktiver Hintergrund im Hero
+const hero = document.querySelector(".hero");
+const glow = document.querySelector(".hero__glow");
+const canAnimate = window.matchMedia("(hover: hover) and (prefers-reduced-motion: no-preference)").matches;
+
+if (hero && glow && canAnimate) {
+  const target = { x: 0, y: 0 };
+  const current = { x: 0, y: 0 };
+  let running = false;
+
+  hero.addEventListener("pointermove", (event) => {
+    const rect = glow.getBoundingClientRect();
+    target.x = event.clientX - rect.left;
+    target.y = event.clientY - rect.top;
+    if (!running) {
+      running = true;
+      requestAnimationFrame(follow);
+    }
+  });
+
+  // Der Schein läuft der Maus weich hinterher, statt zu springen
+  function follow() {
+    current.x += (target.x - current.x) * 0.12;
+    current.y += (target.y - current.y) * 0.12;
+    glow.style.setProperty("--x", `${current.x}px`);
+    glow.style.setProperty("--y", `${current.y}px`);
+
+    if (Math.abs(target.x - current.x) > 0.5 || Math.abs(target.y - current.y) > 0.5) {
+      requestAnimationFrame(follow);
+    } else {
+      running = false;
+    }
+  }
+
+  // Startposition: Mitte des sichtbaren Hero-Bereichs
+  const rect = glow.getBoundingClientRect();
+  const heroRect = hero.getBoundingClientRect();
+  current.x = target.x = heroRect.left - rect.left + heroRect.width / 2;
+  current.y = target.y = heroRect.height * 0.4;
+  glow.style.setProperty("--x", `${current.x}px`);
+  glow.style.setProperty("--y", `${current.y}px`);
+}
 
 document.querySelector("#year").textContent = new Date().getFullYear();

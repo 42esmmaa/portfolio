@@ -604,8 +604,18 @@ h1, h2, h3 {
     grid-template-columns: 1fr;
   }
 
+  .about {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .about__facts {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .about__facts span {
+    font-size: 0.8rem;
+    hyphens: auto;
+    overflow-wrap: anywhere;
   }
 
   .about__facts li {

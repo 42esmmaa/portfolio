@@ -21,10 +21,6 @@ portfolio/
 └── js/main.js      # Projektkarten, Filter, Dark Mode, Menü, Formular
 ```
 
-## Entstehung
-
-Das Grundgerüst habe ich mit KI-Unterstützung aufgesetzt, um mich schneller einzuarbeiten. Alle weiteren Features und Anpassungen sind in der Commit-Historie nachvollziehbar.
-
 ## Lokal starten
 
 Einfach `index.html` im Browser öffnen. Alternativ in VS Code mit der Erweiterung *Live Server*.
